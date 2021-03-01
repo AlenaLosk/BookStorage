@@ -52,7 +52,8 @@ public class ManagerOfBook {
             }
         }
     }
-
+    
+    @Override
     public String toString() {
         for (Book book : library) {
             System.out.println(book.getId() + ". " + book.getTitle() + ", " + book.getAuthor());
