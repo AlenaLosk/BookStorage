@@ -1,0 +1,62 @@
+import java.util.*;
+
+public class ManagerOfBook {
+    ArrayList<Book> library;
+
+    ManagerOfBook() {
+        library = new ArrayList<Book>();
+    }
+
+    public void addBook(Book book) {
+        library.add(book);
+    }
+
+    public void showBook(int id) {
+        for (Book book : library) {
+            if (id == book.id) {
+                System.out.println(book);
+            }
+        }
+    }
+
+    public void removeBook(Book book) {
+        library.remove(book.getId());
+    }
+
+    public void removeBook(int id) {
+        Iterator<Book> bookIterator = library.iterator();//создаем итератор
+        while (bookIterator.hasNext()) {//до тех пор, пока в списке есть элементы
+            Book nextBook = bookIterator.next();//получаем следующий элемент
+            if (nextBook.getId() == id) {
+                bookIterator.remove();//удаляем книгу с нужным id
+            }
+        }
+    }
+
+    public void removeBook(String title, String author) {
+        Iterator<Book> bookIterator = library.iterator();
+        while (bookIterator.hasNext()) {
+            Book nextBook = bookIterator.next();
+            if (nextBook.getTitle().equals(title)) {
+                bookIterator.remove();
+            }
+        }
+    }
+
+    public void removeBook(String author) {
+        Iterator<Book> bookIterator = library.iterator();
+        while (bookIterator.hasNext()) {
+            Book nextBook = bookIterator.next();
+            if (nextBook.getAuthor().equals(author)) {
+                bookIterator.remove();
+            }
+        }
+    }
+
+    public String toString() {
+        for (Book book : library) {
+            System.out.println(book.id + ". " + book.title + ", " + book.author);
+        }
+        return "";
+    }
+}
