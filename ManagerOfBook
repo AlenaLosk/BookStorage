@@ -3,7 +3,7 @@ import java.util.*;
 public class ManagerOfBook {
     ArrayList<Book> library;
 
-    ManagerOfBook() {
+    public ManagerOfBook() {
         library = new ArrayList<Book>();
     }
 
