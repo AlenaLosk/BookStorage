@@ -3,7 +3,7 @@ import java.lang.*;
 
 public class Menu {
 
-    public static void userGreeting(){
+    public static void userGreeting() {
         System.out.println("Добро пожаловать в хранилище книг!");
     }
 
@@ -68,7 +68,8 @@ public class Menu {
             System.out.println(library);
         }
     }
-    public static void finishingProgramm(){
+
+    public static void finishingProgram() {
         System.out.println("Работа с хранилищем книг завершена в плановом режиме.");
     }
 
