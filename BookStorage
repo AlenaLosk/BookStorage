@@ -1,0 +1,20 @@
+public class BookStorage {
+    public static void main(String[] args) throws Exception {
+        ManagerOfBook publicism = new ManagerOfBook();
+        publicism.addBook(new Book("Овощи", "А.Павлов"));
+        publicism.addBook(new Book("Криминалистика", "И.Огибалов"));
+        publicism.addBook(new Book("Ремонт своими руками"));
+        publicism.addBook(new Book("Фрукты", "А.Павлов"));
+        publicism.addBook(new Book("Коллекции мировых музеев", "Ю.Семенова"));
+        publicism.addBook(new Book("Картины И.Глазунова"));
+        publicism.addBook(new Book("Основные принципы психологии", "Е.Железнова"));
+        publicism.addBook(new Book("Основы педагогики", "Е.Железнова"));
+        Menu.userGreeting();
+        Menu.userStartWorking(publicism);
+        Menu.userNeedToShowBook(publicism);
+        Menu.userNeedToShowLibrary(publicism);
+        Menu.userNeedToRemoveBook(publicism);
+        Menu.userNeedToShowLibrary(publicism);
+        Menu.finishingProgramm();
+    }
+}
