@@ -4,18 +4,18 @@ public class Book {
     private String title;
     private String author;
 
-    Book() {
+    public Book() {
         count++;
         id = count;
     }
 
-    Book(String title) {
+    public Book(String title) {
         this();
         this.title = title;
         author = "An unknown author";
     }
 
-    Book(String title, String author) {
+    public Book(String title, String author) {
         this();
         this.title = title;
         this.author = author;
