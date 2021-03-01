@@ -13,7 +13,7 @@ public class ManagerOfBook {
 
     public void showBook(int id) {
         for (Book book : library) {
-            if (id == book.id) {
+            if (id == book.getId()) {
                 System.out.println(book);
             }
         }
@@ -55,7 +55,7 @@ public class ManagerOfBook {
 
     public String toString() {
         for (Book book : library) {
-            System.out.println(book.id + ". " + book.title + ", " + book.author);
+            System.out.println(book.getId() + ". " + book.getTitle() + ", " + book.getAuthor());
         }
         return "";
     }
