@@ -2,75 +2,137 @@ import java.util.*;
 import java.lang.*;
 
 public class Menu {
+    static final String borderline = "-----------------------------------------------------------";
 
     public static void userGreeting() {
         System.out.println("Добро пожаловать в хранилище книг!");
     }
 
-    public static void userStartWorking(ManagerOfBook library) {
+    private static int askUserInt(String text) {
         Scanner scanner = new Scanner(System.in);
+        System.out.print(text);
+        if (scanner.hasNextInt()) {
+            return scanner.nextInt();
+        }
+        scanner.nextLine();
+        return -1;
+    }
+
+    private static String askUserText(String text) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print(text);
+        return scanner.nextLine();
+    }
+
+    public static void userChangeAction(ManagerOfBook library) {
+        while (true) {
+            int userInput = -1;
+            while (stayInCurrentAction(userInput, 5)) {
+                userInput = askUserInt("Если вы желаете добавить новую книгу в библиотеку, то нажмите 1.\n" +
+                        "Если вы желаете найти в библиотеке книгу, то нажмите 2.\n" +
+                        "Если вы желаете удалить из библиотеки книгу, то нажмите 3.\n" +
+                        "Если вы желаете увидеть полную библиотеку, то нажмите 4.\n" +
+                        "Нажмите 0, если вы хотите выйти из программы: ");
+            }
+            switch (userInput) {
+                case 0:
+                    finishingProgram();
+                    return;
+                case 1:
+                    userAddBook(library);
+                    break;
+                case 2:
+                    userSearchBook(library);
+                    break;
+                case 3:
+                    userRemoveBook(library);
+                    break;
+                case 4:
+                    userNeedToShowLibrary(library);
+                    break;
+            }
+        }
+    }
+
+    public static void userAddBook(ManagerOfBook library) {
         int userInput = -1;
-        while (userInput != 1 && userInput != 0) {
-            System.out.print("Вы желаете добавить новую книгу в библиотеку? " +
-                    "Нажмите 1, если да; нажмите 0, если нет ");
-            userInput = scanner.nextInt();
-            scanner.nextLine();
+        while (stayInCurrentAction(userInput, 2)) {
+            userInput = askUserInt("Вы желаете добавить новую книгу в библиотеку? " +
+                    "Нажмите 1, если да; нажмите 0, если хотите вернуться в предыдущее меню: ");
         }
         if (userInput == 1) {
-            System.out.print("Сначала введите название книги: ");
-            String userBookTitle = scanner.nextLine();
-            System.out.print("Теперь введите автора книги: ");
-            String userBookAuthor = scanner.nextLine();
+            String userBookTitle = askUserText("Введите название книги: ");
+            String userBookAuthor = askUserText("Введите автора книги: ");
             library.addBook(new Book(userBookTitle, userBookAuthor));
+            System.out.print("В библиотеку добавлена книга c id ");
+            library.showBook(library.findBookId(userBookTitle));
         }
+        System.out.println(borderline);
     }
 
-    public static void userNeedToShowBook(ManagerOfBook library) {
-        Scanner scanner = new Scanner(System.in);
+    public static void userSearchBook(ManagerOfBook library) {
         int userInput = -1;
-        while (userInput != 0) {
-            System.out.print("Вы желаете увидеть книгу с определенным id из библиотеки? " +
-                    "Введите ее номер или нажмите 0, если не желаете ");
-            if (scanner.hasNextInt()) {
-                userInput = scanner.nextInt();
-                library.showBook(userInput);
-            } else {
-                scanner.nextLine();
-            }
+        while (stayInCurrentAction(userInput, 2)) {
+            userInput = askUserInt("Вы желаете увидеть книгу с определенным id из библиотеки? " +
+                    "Нажмите 1, если да; нажмите 0, если хотите вернуться в предыдущее меню: ");
         }
+        if (userInput == 1) {
+            library.showBook(askUserInt("Введите id искомой книги: "));
+        }
+        System.out.println(borderline);
     }
 
-    public static void userNeedToRemoveBook(ManagerOfBook library) {
-        Scanner scanner = new Scanner(System.in);
+    public static void userRemoveBook(ManagerOfBook library) {
         int userInput = -1;
-        while (userInput != 0) {
-            System.out.print("Вы желаете удалить книгу с определенным id из библиотеки? " +
-                    "Введите ее номер (или автора) или нажмите 0, если не желаете ");
-            if (scanner.hasNextInt()) {
-                userInput = scanner.nextInt();
-                library.removeBook(userInput);
-            } else {
-                library.removeBook(scanner.nextLine());
-            }
+        while (stayInCurrentAction(userInput, 4)) {
+            userInput = askUserInt("Вы желаете удалить книгу с определенным id из библиотеки или книги определенного автора?\n" +
+                    "Нажмите 1, если удаление будет произведено по id.\n" +
+                    "Нажмите 2, если удаление будет произведено по автору.\n" +
+                    "Нажмите 3, если удаление будет произведено по названию и автору.\n" +
+                    "Или нажмите 0, если хотите вернуться в предыдущее меню: ");
         }
+        if (userInput == 1) {
+            library.removeBook(askUserInt("Введите id удаляемой книги: "));
+        }
+        if (userInput == 2) {
+            library.removeBook(askUserText("Введите автора, книги которого будут удалены: "));
+        }
+        if (userInput == 3) {
+            library.removeBook(askUserText("Введите название книги, которая будет удалена: "), askUserText("Введите автора книги, которая будет удалена: "));
+        }
+        System.out.println(borderline);
     }
 
     public static void userNeedToShowLibrary(ManagerOfBook library) {
-        Scanner scanner = new Scanner(System.in);
         int userInput = -1;
-        while (userInput != 1 && userInput != 0) {
-            System.out.print("Вы желаете увидеть всю текущую библиотеку? " +
-                    "Нажмите 1, если да; нажмите 0, если нет ");
-            userInput = scanner.nextInt();
-            scanner.nextLine();
+        while (stayInCurrentAction(userInput, 2)) {
+            userInput = askUserInt("Вы желаете увидеть всю текущую библиотеку? " +
+                    "Нажмите 1, если да; нажмите 0, если хотите вернуться в предыдущее меню: ");
         }
-        if (userInput != 0) {
+        if (userInput == 1) {
             System.out.println(library);
         }
+        System.out.println(borderline);
     }
 
     public static void finishingProgram() {
         System.out.println("Работа с хранилищем книг завершена в плановом режиме.");
     }
 
+    private static boolean stayInCurrentAction(int userInput, int quantityOfConditions) {
+        boolean b = userInput != 0;
+        if (quantityOfConditions > 1) { // общее если условий от 2 и более
+            b &= userInput != 1;
+        }
+        if (quantityOfConditions > 2) { // общее если условий от 3 и более
+            b &= userInput != 2;
+        }
+        if (quantityOfConditions > 3) { // общее если условий от 3 и более
+            b &= userInput != 3;
+        }
+        if (quantityOfConditions > 4) { // общее если условий от 5 и более
+            b &= userInput != 4;
+        }
+        return b;
+    }
 }
