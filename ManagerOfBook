@@ -6,19 +6,16 @@ public class ManagerOfBook {
     public ManagerOfBook() {
         library = new ArrayList<Book>();
     }
-
     public void addBook(Book book) {
         library.add(book);
     }
-
     public void showBook(int id) {
-        for (Book book : library) {
-            if (id == book.getId()) {
-                System.out.println(book);
-            }
+        if (findBook(id) == null) {
+            System.out.println("Книга с данным id отсутствует в хранилище!");
+        } else {
+            System.out.print(findBook(id));
         }
     }
-
     public Book findBook(int id) {
         for (Book book : library) {
             if (id == book.getId()) {
@@ -27,24 +24,32 @@ public class ManagerOfBook {
         }
         return null;
     }
-
-    public int findBookId(String title) {
+    public int findBookId(String title, String author) {
+        int result = -1;
         for (Book book : library) {
             if (title.equals(book.getTitle())) {
+                result = book.getId();
+            }
+        }
+        if (!author.equals(findBook(result).getAuthor())) {
+            result = 0;
+        }
+        return result;
+    }
+    public int findBookId(String author) {
+        for (Book book : library) {
+            if (author.equals(book.getAuthor())) {
                 return book.getId();
             }
         }
         return 0;
     }
-
     public int showSizeOfLibrary() {
         return library.size();
     }
-
     public void removeBook(Book book) {
         library.remove(book.getId());
     }
-
     public void removeBook(int id) {
         Iterator<Book> bookIterator = library.iterator();//создаем итератор
         while (bookIterator.hasNext()) {//до тех пор, пока в списке есть элементы
@@ -54,7 +59,6 @@ public class ManagerOfBook {
             }
         }
     }
-
     public void removeBook(String title, String author) {
         Iterator<Book> bookIterator = library.iterator();
         while (bookIterator.hasNext()) {
@@ -64,7 +68,6 @@ public class ManagerOfBook {
             }
         }
     }
-
     public void removeBook(String author) {
         Iterator<Book> bookIterator = library.iterator();
         while (bookIterator.hasNext()) {
@@ -81,4 +84,70 @@ public class ManagerOfBook {
         }
         return "";
     }
+    public static void addBookInStorage(ManagerOfBook library) {
+        String userBookTitle = Menu.askUserText("Введите название книги: ");
+        String userBookAuthor = Menu.askUserText("Введите автора книги: ");
+        library.addBook(new Book(userBookTitle, userBookAuthor));
+        System.out.print("В библиотеку добавлена книга c id ");
+        library.showBook(library.showSizeOfLibrary());
+    }
+    public static void searchBookInStorage(ManagerOfBook library) {
+        library.showBook(Menu.askUserInt("Введите id искомой книги: "));
+    }
+    public static void removeBookInStorage(ManagerOfBook library) {
+        int userInput = -1;
+        while (stayInCurrentAction(userInput, 4)) {
+            userInput = Menu.askUserInt("Вы желаете удалить книгу с определенным id из библиотеки или книги определенного автора?\n" +
+                    "Нажмите 1, если удаление будет произведено по id.\n" +
+                    "Нажмите 2, если удаление будет произведено по автору.\n" +
+                    "Нажмите 3, если удаление будет произведено по названию и автору.\n" +
+                    "Или нажмите 0, если хотите вернуться в предыдущее меню: ");
+        }
+        if (userInput == 1) {
+            int bookToRemoveId = Menu.askUserInt("Введите id удаляемой книги: ");
+            if (library.findBook(bookToRemoveId) == null) {
+                System.out.println("Книга с данным id отсутствует в хранилище!");
+            } else {
+                library.removeBook(bookToRemoveId);
+                System.out.println("Книга удалена.");
+            }
+        } else if (userInput == 2) {
+            String bookToRemoveAuthor = Menu.askUserText("Введите автора, книги которого будут удалены: ");
+            if (library.findBookId(bookToRemoveAuthor) == 0) {
+                System.out.println("Книга данного автора отсутствует в хранилище!");
+            } else {
+                library.removeBook(bookToRemoveAuthor);
+                System.out.println("Книга(и) удалена(ы).");
+            }
+        } else if (userInput == 3) {
+            String bookToRemoveTitle = Menu.askUserText("Введите название книги, которая будет удалена: ");
+            String bookToRemoveAuthor = Menu.askUserText("Введите автора книги, которая будет удалена: ");
+            if (library.findBookId(bookToRemoveTitle, bookToRemoveAuthor) == 0) {
+                System.out.println("Книга с таким названием у данного автора отсутствует в хранилище!");
+            } else {
+                library.removeBook(bookToRemoveTitle, bookToRemoveAuthor);
+                System.out.println("Книга удалена.");
+            }
+        }
+    }
+    public static void showAllBookInStorage(ManagerOfBook library) {
+        System.out.print(library);
+    }
+    public static boolean stayInCurrentAction(int userInput, int quantityOfConditions) {
+        boolean b = userInput != 0;
+        if (quantityOfConditions > 1) { // общее если условий от 2 и более
+            b &= userInput != 1;
+        }
+        if (quantityOfConditions > 2) { // общее если условий от 3 и более
+            b &= userInput != 2;
+        }
+        if (quantityOfConditions > 3) { // общее если условий от 3 и более
+            b &= userInput != 3;
+        }
+        if (quantityOfConditions > 4) { // общее если условий от 5 и более
+            b &= userInput != 4;
+        }
+        return b;
+    }
 }
+
