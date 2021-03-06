@@ -10,6 +10,6 @@ public class BookStorage {
         randomBooks.addBook(new Book("Основные принципы психологии", "Е.Железнова"));
         randomBooks.addBook(new Book("Основы педагогики", "Е.Железнова"));
         Menu.userGreeting();
-        Menu.userChangeAction(randomBooks);
+        Menu.userChooseAction(randomBooks);
     }
 }
