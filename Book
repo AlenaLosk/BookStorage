@@ -18,7 +18,11 @@ public class Book {
     public Book(String title, String author) {
         this();
         this.title = title;
-        this.author = author;
+        if (author.equals(null)) {
+            this.author = "An unknown author";
+        } else {
+            this.author = author;
+        }
     }
 
     public int getId() {
@@ -51,3 +55,4 @@ public class Book {
         return "";
     }
 }
+
